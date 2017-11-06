@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Sample Attachments</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+       <!--<script  src="jquery-3.2.1.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript">
+           
+                var fileToUpload = {};
+                function attach(element) {
+                    console.log(element);
+                    fileToUpload = element.files[0];
+                }
+              
+                
+                function upload() {
+                    var form = new FormData();
+                    form.append(fileToUpload.name, fileToUpload);                  
+                    var postUrl = "https://poonam-jadhav-dev-ed.my.salesforce.com/services/data/v40.0/sobjects/Attachment";
+                    var sessionId = "00D6A000001Wptb!AQEAQNsQXKdCBzI8yLLsCJ4txUCypkBul8NI0.lb8rEd.8.DdrzQgvOfQ6wUSvdJsH1Se32XYyWGE9BJuyRuTlK8KKSLnS_i";
+                    form.append("postUrl", postUrl);
+                    form.append("sessionId", sessionId);
+                    form.append("orgId", "00D6A000001Wptb");
+                    var datatoupload = {
+                              "Name" : fileToUpload.name,
+                              "Body": "Base64Encoded fileToUpload",
+                              "parentId": "0066A000002wpZo" //the id of the opportunity
+                            }
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "https://poonam-jadhav-dev-ed.my.salesforce.com/services/data/v40.0/sobjects/Attachment",
+                        "method": "POST",
+                        "data":JSON.stringify(datatoupload),
+                        "headers": {
+                        "authorization": "Bearer 00D6A000001Wptb!AQEAQNsQXKdCBzI8yLLsCJ4txUCypkBul8NI0.lb8rEd.8.DdrzQgvOfQ6wUSvdJsH1Se32XYyWGE9BJuyRuTlK8KKSLnS_i",
+                        "content-type": "application/json",
+                        "referrer-policy":"origin-when-cross-origin",
+                        "x-content-type-options":"nosniff",
+                        "cache-control": "no-cache",
+                        
+                        }
+                    }
+
+        $.ajax(settings).done(function (response) {
+        console.log(response);
+        });
+                }
+            
+           
+        </script>
+    </head>
+    <input type="file" id="file" onchange="javascript:attach(this);">
+    <input type="button" value="upload" onclick="upload();"/>
+</html>
