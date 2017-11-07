@@ -11,9 +11,25 @@
                     console.log(element);
                     fileToUpload = element.files[0];
                 }
-              
+               var content = "";
+                function getfileContent () {
+                        var file = document.getElementById("file").files[0];
+                        if (file) {
+                            var reader = new FileReader();
+                            reader.readAsBinaryString(file, "UTF-8");
+                            reader.onload = function (evt) {
+                               content =  evt.target.result;
+                            }
+                            reader.onerror = function (evt) {
+                              content = "failed";
+                            }
+                        }
+                    }
                 
                 function upload() {
+                    var reader = new FileReader();
+                    //var content = reader.readAsBinaryString(fileToUpload);
+                    
                     var form = new FormData();
                     form.append(fileToUpload.name, fileToUpload);                  
                     var postUrl = "https://poonam-jadhav-dev-ed.my.salesforce.com/services/data/v40.0/sobjects/Attachment";
@@ -21,9 +37,11 @@
                     form.append("postUrl", postUrl);
                     form.append("sessionId", sessionId);
                     form.append("orgId", "00D6A000001Wptb");
-                    var datatoupload = {
+                    getfileContent();
+                    setTimeout(function(){
+                        var datatoupload = {
                               "Name" : fileToUpload.name,
-                              "Body": "Base64Encoded fileToUpload",
+                              "Body": btoa(content),
                               "parentId": "0066A000002wpZo" //the id of the opportunity
                             }
                     var settings = {
@@ -45,6 +63,8 @@
         $.ajax(settings).done(function (response) {
         console.log(response);
         });
+                    },2000);
+                    
                 }
             
            
