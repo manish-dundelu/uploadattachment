@@ -1,4 +1,4 @@
-### Github Tutorial testing 1..2
+### Github Tutorial testing 
 
 ####1. [How to Host Files on Github](http://www.labnol.org/internet/free-file-hosting-github/29092/)
 
